@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_txt_size">28sp</dimen>
+    <dimen name="card_padding">30dp</dimen>
+    <dimen name="list_txt_size">18sp</dimen>
+</resources>
