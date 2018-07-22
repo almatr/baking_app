@@ -9,16 +9,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/card_padding"
+            android:layout_margin="10dp"
             android:textStyle="italic"
-            android:textSize= "@dimen/list_txt_size"/>
-
-    <View
-        android:id="@+id/recycler_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_weight="1"
-        android:background="@android:color/darker_gray"
-        android:layout_gravity="center"/>
+            android:textSize= "@dimen/list_txt_size"
+            android:clickable="true"
+            android:textColor="#607D8B"/>
 
 </LinearLayout>

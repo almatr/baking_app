@@ -10,11 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.myapplication.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -22,6 +22,7 @@ import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -29,8 +30,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -41,15 +43,18 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
     private SimpleExoPlayerView mPlayerView;
     private SimpleExoPlayer mExoPlayer;
     private TextView mVideoDirection;
+    private String mImage;
+    private ImageView recipeImage;
 
     long playbackPosition = 0;
     int currentWindow = 0;
     boolean playWhenReady = true;
 
-    public static VideoFragment newInstance(String uri, String description){
+    public static VideoFragment newInstance(String uri, String description, String image){
         Bundle bundle = new Bundle();
         bundle.putString("video_uri", uri);
         bundle.putString("video_description", description);
+        bundle.putString("recipe_image", image);
 
         VideoFragment videoFragment = new VideoFragment();
         videoFragment.setArguments(bundle);
@@ -60,6 +65,7 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
         if (bundle != null) {
             uri = bundle.getString("video_uri");
             video_description = bundle.getString("video_description");
+            mImage = bundle.getString("recipe_image");
         }
     }
 
@@ -69,29 +75,44 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
         final View rootView = inflater.inflate(R.layout.exoplayer_layout, container,
                 false);
         readBundle(getArguments());
-        mPlayerView = rootView.findViewById(R.id.video_player);
+        mPlayerView = rootView.findViewById(R.id.videoView);
         mVideoDirection = rootView.findViewById(R.id.media_description);
-        initializePlayer(Uri.parse(uri), rootView);
+        recipeImage = rootView.findViewById(R.id.step_image);
+        if(!uri.isEmpty()){
+            initializePlayer(Uri.parse(uri));
+            mPlayerView.setVisibility(View.VISIBLE);
+            recipeImage.setVisibility(View.GONE);
+        }else {
+            if(!mImage.isEmpty()){
+                Picasso.with(getActivity()).load(mImage)
+                        .placeholder(R.drawable.android_error)
+                        .error(R.drawable.android_error).into(recipeImage);
+            } else {
+                recipeImage.setImageResource(R.drawable.android_error);
+            }
+            mPlayerView.setVisibility(View.GONE);
+            recipeImage.setVisibility(View.VISIBLE);
+        }
         mVideoDirection.setText(video_description);
         return rootView;
     }
 
-    private void initializePlayer(Uri mediaUri, View rootView) {
+    private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
-            // Create an instance of the ExoPlayer.
+
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory
-                            (rootView.getContext()), new DefaultTrackSelector(),
-                    new DefaultLoadControl());
-            mPlayerView.setPlayer(mExoPlayer);
-            mExoPlayer.setPlayWhenReady(playWhenReady);
-            mExoPlayer.seekTo(currentWindow, playbackPosition);
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector,loadControl);
 
-            // Prepare the MediaSource.
-            MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab")).
-                    createMediaSource(mediaUri);
-            mExoPlayer.prepare(mediaSource, true, false);
+            mPlayerView.requestFocus();
+            mPlayerView.setPlayer(mExoPlayer);
+
+            String userAgent = Util.getUserAgent(getContext(),"Baking");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    getContext(),userAgent), new DefaultExtractorsFactory(),null,null);
+
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
         }
     }
 

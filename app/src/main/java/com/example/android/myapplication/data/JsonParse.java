@@ -31,10 +31,10 @@ public class JsonParse {
     private String urlString =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
+    //Using Gson as a third party library for parsing
     public static Recipe[] parseJSON(String response) {
         Gson gson = new Gson();
         Recipe[] recipeParse = gson.fromJson(response, Recipe[].class);
-       // Log.v("!!!!!!!!!!!recipeaprse ", recipeParse[0].getName().toString());
         return recipeParse;
     }
 

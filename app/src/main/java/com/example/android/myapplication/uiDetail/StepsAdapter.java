@@ -4,16 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.myapplication.R;
-import com.example.android.myapplication.data.Recipe;
+import com.example.android.myapplication.data.CallBackListener;
 import com.example.android.myapplication.data.RecipeSteps;
 
 import java.util.ArrayList;
@@ -21,10 +19,19 @@ import java.util.ArrayList;
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
     private ArrayList<RecipeSteps> mSteps;
+    private String mRecipeName;
+    private String mImage;
+    private boolean twoPane;
+    private CallBackListener mCallBackListener;
 
     //constructor
-    public StepsAdapter(ArrayList<RecipeSteps> steps){
+    public StepsAdapter(ArrayList<RecipeSteps> steps, String recipeName, String image,
+                        boolean twoPaneLayout, CallBackListener mCallBackListener) {
         mSteps = steps;
+        mRecipeName = recipeName;
+        mImage = image;
+        twoPane = twoPaneLayout;
+        this.mCallBackListener = mCallBackListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -54,13 +61,26 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
         holder.recipe_step.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Bundle b = new Bundle();
-                b.putString("video_url", singleStep.getVideoURL());
-                b.putString("media_description", singleStep.getDescription());
-                final Intent intent = new Intent(view.getContext(), MediaView.class);
-                intent.putExtras(b);
-                if (intent.resolveActivity(view.getContext().getPackageManager()) != null){
-                    view.getContext().startActivity(intent);
+                Bundle mBundle = new Bundle();
+                mBundle.putParcelableArrayList("Steps", mSteps);
+                mBundle.putInt("position", position);
+                mBundle.putString("recipe_name", mRecipeName);
+                mBundle.putString("recipe_image", mImage);
+                if(!twoPane){
+                    Intent intent = new Intent(view.getContext(), MediaView.class);
+                    intent.putExtras(mBundle);
+                    if (intent.resolveActivity(view.getContext().getPackageManager()) != null){
+                        view.getContext().startActivity(intent);
+                    }
+                } else {
+                    String video_url = singleStep.getVideoURL();
+                    if (singleStep.getVideoURL().isEmpty()) {
+                        video_url = singleStep.getThumbnailURL();
+                    }
+                    mCallBackListener.onCallBack(
+                            video_url,
+                            singleStep.getDescription(),
+                            mImage);
                 }
             }
         });
