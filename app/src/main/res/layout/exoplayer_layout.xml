@@ -15,12 +15,12 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/videoView"
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="@dimen/media_height"/>
 
         <ImageView
             android:id="@+id/step_image"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/media_height"
             android:contentDescription="Recipe Image"
             android:visibility="gone" />
 
@@ -29,8 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="italic"
-            android:textSize="22sp"
-            android:layout_margin="8dp"/>
+            android:textSize="@dimen/txt_size"
+            android:layout_margin="@dimen/txt_margin"/>
 
     </LinearLayout>
 </ScrollView>

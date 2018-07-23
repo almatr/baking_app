@@ -3,9 +3,6 @@ package com.example.android.myapplication.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 public class Recipe implements Parcelable {
@@ -102,5 +99,4 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
-
 }

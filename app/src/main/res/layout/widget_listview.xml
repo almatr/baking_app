@@ -13,7 +13,8 @@
         style="@android:style/TextAppearance.Medium"
         android:gravity="center"
         android:layout_margin="4dp"
-        android:text="Recipe Name" />
+        android:text="Recipe Name"
+        android:textColor="#4CAF50"/>
 
     <ListView
         android:id="@+id/widget_listview"

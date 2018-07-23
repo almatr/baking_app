@@ -1,6 +1,5 @@
 package com.example.android.myapplication.uiDetail;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.android.myapplication.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -38,6 +36,10 @@ import static android.support.constraint.Constraints.TAG;
 
 public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
 
+    private static final String VIDEO_URI = "video_uri";
+    private static final String VIDEO_DESCRIPTION = "video_description";
+    private static final String RECIPE_IMAGE = "recipe_image";
+
     private String uri;
     private String video_description;
     private SimpleExoPlayerView mPlayerView;
@@ -52,10 +54,9 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
 
     public static VideoFragment newInstance(String uri, String description, String image){
         Bundle bundle = new Bundle();
-        bundle.putString("video_uri", uri);
-        bundle.putString("video_description", description);
-        bundle.putString("recipe_image", image);
-
+        bundle.putString(VIDEO_URI, uri);
+        bundle.putString(VIDEO_DESCRIPTION, description);
+        bundle.putString(RECIPE_IMAGE, image);
         VideoFragment videoFragment = new VideoFragment();
         videoFragment.setArguments(bundle);
         return videoFragment;
@@ -63,15 +64,17 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
 
     private void readBundle(Bundle bundle){
         if (bundle != null) {
-            uri = bundle.getString("video_uri");
-            video_description = bundle.getString("video_description");
-            mImage = bundle.getString("recipe_image");
+            uri = bundle.getString(VIDEO_URI);
+            video_description = bundle.getString(VIDEO_DESCRIPTION);
+            mImage = bundle.getString(RECIPE_IMAGE);
         }
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.exoplayer_layout, container,
                 false);
         readBundle(getArguments());
@@ -103,14 +106,12 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector,loadControl);
-
             mPlayerView.requestFocus();
             mPlayerView.setPlayer(mExoPlayer);
-
             String userAgent = Util.getUserAgent(getContext(),"Baking");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    getContext(),userAgent), new DefaultExtractorsFactory(),null,null);
-
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
+                    new DefaultDataSourceFactory(getContext(),userAgent),
+                    new DefaultExtractorsFactory(),null,null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(playWhenReady);
         }
@@ -150,9 +151,7 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-    }
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) { }
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
@@ -160,47 +159,26 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
     }
 
     @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
+    public void onLoadingChanged(boolean isLoading) { }
 
     @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
-            Log.d(TAG, "onPlayerStateChanged: PLAYING");
-        } else if((playbackState == ExoPlayer.STATE_READY)){
-            Log.d(TAG, "onPlayerStateChanged: PAUSED");
-        }
-
-    }
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) { }
 
     @Override
-    public void onRepeatModeChanged(int repeatMode) {
-
-    }
+    public void onRepeatModeChanged(int repeatMode) { }
 
     @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-    }
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) { }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
+    public void onPlayerError(ExoPlaybackException error) { }
 
     @Override
-    public void onPositionDiscontinuity(int reason) {
-
-    }
+    public void onPositionDiscontinuity(int reason) { }
 
     @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) { }
 
     @Override
-    public void onSeekProcessed() {
-
-    }
+    public void onSeekProcessed() { }
 }

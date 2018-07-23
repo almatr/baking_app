@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.data.CallBackListener;
 import com.example.android.myapplication.data.RecipeSteps;
@@ -23,6 +22,10 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     private String mImage;
     private boolean twoPane;
     private CallBackListener mCallBackListener;
+    private static final String STEPS = "Steps";
+    private static final String POSITION = "position";
+    private static final String RECIPE_NAME = "recipe_name";
+    private static final String RECIPE_IMAGE = "recipe_image";
 
     //constructor
     public StepsAdapter(ArrayList<RecipeSteps> steps, String recipeName, String image,
@@ -62,10 +65,10 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 Bundle mBundle = new Bundle();
-                mBundle.putParcelableArrayList("Steps", mSteps);
-                mBundle.putInt("position", position);
-                mBundle.putString("recipe_name", mRecipeName);
-                mBundle.putString("recipe_image", mImage);
+                mBundle.putParcelableArrayList(STEPS, mSteps);
+                mBundle.putInt(POSITION, position);
+                mBundle.putString(RECIPE_NAME, mRecipeName);
+                mBundle.putString(RECIPE_IMAGE, mImage);
                 if(!twoPane){
                     Intent intent = new Intent(view.getContext(), MediaView.class);
                     intent.putExtras(mBundle);

@@ -2,11 +2,8 @@ package com.example.android.myapplication.data;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-
 import com.example.android.myapplication.ui.MasterListFragment;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -21,6 +18,8 @@ public class JsonParse {
 
     ArrayList<Recipe> recipes;
     MasterListFragment masterListFragment;
+    private String RECIPE_URL =
+            "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     // public constructor is necessary for collections
     public JsonParse(MasterListFragment masterListFragment) {
@@ -28,8 +27,7 @@ public class JsonParse {
         this.masterListFragment = masterListFragment;
     }
 
-    private String urlString =
-            "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+    private String urlString = RECIPE_URL;
 
     //Using Gson as a third party library for parsing
     public static Recipe[] parseJSON(String response) {
@@ -43,11 +41,7 @@ public class JsonParse {
         new recipeQueryTask().execute(url);
     }
 
-    public ArrayList<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    //Build URL from string movieUrl and return url
+    //Build URL from string RECIPE_URL and return url
     public URL buildUrl(String recipeUrl) {
         Uri builtUri = Uri.parse(recipeUrl).buildUpon().build();
         URL url = null;
@@ -79,7 +73,7 @@ public class JsonParse {
         }
     }
 
-
+    //perform AsyncTask
     public class recipeQueryTask extends AsyncTask<URL, Void, String> {
         @Override
         protected String doInBackground(URL... urls) {
@@ -102,7 +96,6 @@ public class JsonParse {
                 if (recipes != null){
                     recipes.clear();
                 }
-                //JsonUtil returns JSON result which is parsed into ArrayList of MovieClass objects
                 recipes = new ArrayList<Recipe>(Arrays.asList(JsonParse.parseJSON(result)));
                 masterListFragment.gridCreation(recipes);
             }

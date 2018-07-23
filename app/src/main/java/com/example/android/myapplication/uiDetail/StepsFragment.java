@@ -14,10 +14,15 @@ import com.example.android.myapplication.R;
 import com.example.android.myapplication.data.CallBackListener;
 import com.example.android.myapplication.data.RecipeIngredients;
 import com.example.android.myapplication.data.RecipeSteps;
-
 import java.util.ArrayList;
 
 public class StepsFragment extends Fragment {
+
+    private static final String STEPS = "Steps";
+    private static final String INGREDIENTS = "Ingredients";
+    private static final String RECIPE_NAME = "recipe_name";
+    private static final String RECIPE_IMAGE = "recipe_image";
+    private static final String TWO_PANE = "two_pane";
 
     private RecyclerView mSteps;
     private RecyclerView mIngredients;
@@ -27,7 +32,6 @@ public class StepsFragment extends Fragment {
     private String mImage;
     private boolean twoPane;
     private CallBackListener mCallBackListener;
-
     private ArrayList<RecipeSteps> recipeSteps = new ArrayList<RecipeSteps>();
     private ArrayList<RecipeIngredients> ingredients = new ArrayList<RecipeIngredients>();
 
@@ -35,11 +39,11 @@ public class StepsFragment extends Fragment {
                                             ArrayList<RecipeIngredients> ingredients,
                                             String mRecipeName, String image, boolean twoPane) {
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("Steps", steps);
-        bundle.putParcelableArrayList("Ingredients", ingredients);
-        bundle.putString("recipe_name", mRecipeName);
-        bundle.putString("recipe_image", image);
-        bundle.putBoolean("two_pane", twoPane);
+        bundle.putParcelableArrayList(STEPS, steps);
+        bundle.putParcelableArrayList(INGREDIENTS, ingredients);
+        bundle.putString(RECIPE_NAME, mRecipeName);
+        bundle.putString(RECIPE_IMAGE, image);
+        bundle.putBoolean(TWO_PANE, twoPane);
 
         StepsFragment fragment = new StepsFragment();
         fragment.setArguments(bundle);
@@ -48,11 +52,11 @@ public class StepsFragment extends Fragment {
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
-            recipeSteps = bundle.getParcelableArrayList("Steps");
-            ingredients = bundle.getParcelableArrayList("Ingredients");
-            mRecipeName = bundle.getString("recipe_name");
-            mImage = bundle.getString("recipe_image");
-            twoPane = bundle.getBoolean("two_pane");
+            recipeSteps = bundle.getParcelableArrayList(STEPS);
+            ingredients = bundle.getParcelableArrayList(INGREDIENTS);
+            mRecipeName = bundle.getString(RECIPE_NAME);
+            mImage = bundle.getString(RECIPE_IMAGE);
+            twoPane = bundle.getBoolean(TWO_PANE);
         }
     }
 

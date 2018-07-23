@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.data.CallBackListener;
 import com.example.android.myapplication.data.Recipe;
@@ -21,7 +20,13 @@ public class StepsIngredients extends AppCompatActivity implements CallBackListe
 
     private Recipe recipe;
     private ArrayList<RecipeSteps> recipeSteps;
+
     private static final String LAST_CLICKED_RECIPE = "lastClickedRecipe";
+    private static final String CLICKED_RECIPE_NAME = "clickedRecipeName";
+    private static final String INGREDIENTS = "Ingredients";
+    private static final String STEPS = "Steps";
+    private static final String RECIPE = "Recipe";
+
 
     @Override
     public void onCallBack(String url, String description, String mImage) {
@@ -46,11 +51,11 @@ public class StepsIngredients extends AppCompatActivity implements CallBackListe
 
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("Recipe")) {
-                recipe = (Recipe) getIntent().getParcelableExtra("Recipe");
+            if (intent.hasExtra(RECIPE)) {
+                recipe = (Recipe) getIntent().getParcelableExtra(RECIPE);
                 recipeIngredients = getIntent().getExtras()
-                        .getParcelableArrayList("Ingredients");
-                recipeSteps = getIntent().getExtras().getParcelableArrayList("Steps");
+                        .getParcelableArrayList(INGREDIENTS);
+                recipeSteps = getIntent().getExtras().getParcelableArrayList(STEPS);
                 mRecipeName = recipe.getName();
                 mImage = recipe.getImage();
 
@@ -58,15 +63,14 @@ public class StepsIngredients extends AppCompatActivity implements CallBackListe
             }
         }
 
+        //set title to be name of the recipe clicked
         setTitle(mRecipeName);
-
         if (findViewById(R.id.recipe_detail_landscape) != null) {
             mTwoPane = true;
         }
 
         FragmentManager fragmentManagerStep = getSupportFragmentManager();
         FragmentTransaction fragmentTransactionStep = fragmentManagerStep.beginTransaction();
-
         StepsFragment fragmentStep = StepsFragment
                 .newInstance(recipeSteps, recipeIngredients, mRecipeName, mImage, mTwoPane);
         fragmentTransactionStep.replace(R.id.master_list_fragment, fragmentStep);
@@ -80,8 +84,8 @@ public class StepsIngredients extends AppCompatActivity implements CallBackListe
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(ingredients);
-        editor.putString("ingredients", json);
-        editor.putString("clickedRecipeName",recipeName);
+        editor.putString(INGREDIENTS, json);
+        editor.putString(CLICKED_RECIPE_NAME,recipeName);
         editor.commit();
         RecipeWidgetProvider.sendRefreshBroadcast(context);
     }

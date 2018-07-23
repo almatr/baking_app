@@ -2,15 +2,12 @@ package com.example.android.myapplication.uiDetail;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.data.RecipeIngredients;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,6 +17,7 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
     private ArrayList<RecipeIngredients> ingredients;
     private int mWidgetId;
     private static final String LAST_CLICKED_RECIPE = "lastClickedRecipe";
+    private static final String INGREDIENTS = "Ingredients";
 
     public MyWidgetRemoteViewsFactory(Context applicationContext, int appWidgetId) {
         mContext = applicationContext;
@@ -27,15 +25,13 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
     }
 
     @Override
-    public void onCreate() {
-
-    }
+    public void onCreate() { }
 
     @Override
     public void onDataSetChanged() {
         SharedPreferences preferences = mContext.getSharedPreferences(LAST_CLICKED_RECIPE,
                 Context.MODE_PRIVATE);
-        String ingredientsL = preferences.getString("ingredients", "");
+        String ingredientsL = preferences.getString(INGREDIENTS, "");
         Gson gson = new Gson();
         RecipeIngredients[] ingredientsParse = gson.fromJson(ingredientsL,
                 RecipeIngredients[].class);

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.widget.RemoteViews;
-
 import com.example.android.myapplication.R;
 
 /**
@@ -16,6 +15,8 @@ import com.example.android.myapplication.R;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
+    private static final String LAST_CLICKED_RECIPE = "lastClickedRecipe";
+    private static final String CLICKED_RECIPE_NAME = "clickedRecipeName";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -29,14 +30,10 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     }
 
     @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
+    public void onEnabled(Context context) { }
 
     @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
+    public void onDisabled(Context context) { }
 
     public static RemoteViews createRemoteViews(Context context, int appWidgetId){
         Intent intent = new Intent(context, WidgetRemoteService.class);
@@ -45,9 +42,9 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
         RemoteViews result = new RemoteViews(context.getPackageName(), R.layout.widget_listview);
         result.setRemoteAdapter(R.id.widget_listview, intent);
-        SharedPreferences preferences = context.getSharedPreferences("lastClickedRecipe",
+        SharedPreferences preferences = context.getSharedPreferences(LAST_CLICKED_RECIPE,
                 Context.MODE_PRIVATE);
-        String recipeName = preferences.getString("clickedRecipeName", "");
+        String recipeName = preferences.getString(CLICKED_RECIPE_NAME, "");
         result.setTextViewText(R.id.widget_recipeName, recipeName);
         return result;
     }
@@ -62,10 +59,9 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(final Context context, Intent intent) {
         super.onReceive(context, intent);
-
         final String action = intent.getAction();
         if (action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
-            // refresh all your widgets
+            // refresh all widgets
             AppWidgetManager mgr = AppWidgetManager.getInstance(context);
             ComponentName cn = new ComponentName(context, RecipeWidgetProvider.class);
             onUpdate(context, mgr, mgr.getAppWidgetIds(cn));

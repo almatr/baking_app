@@ -2,10 +2,7 @@ package com.example.android.myapplication.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-
 import com.example.android.myapplication.R;
-import com.example.android.myapplication.data.JsonParse;
 
 public class MainActivity extends AppCompatActivity{
 
