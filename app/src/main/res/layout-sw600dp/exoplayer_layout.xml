@@ -10,13 +10,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="@dimen/media_height_tablet"
         app:resize_mode="fill"/>
 
     <ImageView
         android:id="@+id/step_image"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="@dimen/media_height_tablet"
         android:contentDescription="Recipe Image"
         android:visibility="gone" />
 
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
-        android:textSize="22sp"
+        android:textSize="@dimen/txt_size"
         android:layout_marginTop="@dimen/card_padding"
         android:layout_marginLeft="@dimen/card_padding"
         android:layout_marginRight="@dimen/card_padding"/>

@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/card_padding"
-            android:text="Previous" />
+            android:text="Previous"
+            android:backgroundTint="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/button_next"
@@ -32,9 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/card_padding"
-            android:text="Next" />
-
+            android:text="Next"
+            android:backgroundTint="@color/colorPrimary"/>
     </RelativeLayout>
-
-
 </LinearLayout>

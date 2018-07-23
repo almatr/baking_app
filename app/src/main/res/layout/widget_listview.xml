@@ -8,13 +8,14 @@
 
     <TextView
         android:id="@+id/widget_recipeName"
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@android:style/TextAppearance.Medium"
-        android:gravity="center"
         android:layout_margin="4dp"
+        android:gravity="center"
         android:text="Recipe Name"
-        android:textColor="#4CAF50"/>
+        android:textColor="#4CAF50"
+        android:textStyle="bold|italic" />
 
     <ListView
         android:id="@+id/widget_listview"

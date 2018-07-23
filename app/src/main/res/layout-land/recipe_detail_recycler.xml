@@ -21,7 +21,7 @@
             android:fontFamily="cursive"
             android:gravity="center"
             android:paddingBottom="@dimen/title_padding"
-            android:text="INGREDIENTS"
+            android:text="@string/recipe_ingredients"
             android:textColor="#4CAF50"
             android:textSize="18sp"
             android:lineSpacingExtra="@dimen/title_padding"/>
@@ -45,7 +45,7 @@
             android:layout_marginBottom="@dimen/card_padding"
             android:fontFamily="cursive"
             android:gravity="center"
-            android:text="RECIPE STEPS"
+            android:text="@string/recipe_steps"
             android:textColor="#4CAF50"
             android:textSize="@dimen/title_padding" />
 

@@ -14,5 +14,4 @@
             android:textSize= "@dimen/list_txt_size"
             android:clickable="true"
             android:textColor="#607D8B"/>
-
 </LinearLayout>
