@@ -1,9 +1,12 @@
 package com.example.android.myapplication.uiDetail;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.example.android.myapplication.R;
@@ -76,10 +79,20 @@ public class MediaView extends AppCompatActivity {
     }
 
     private void setFragment(RecipeSteps singleStep){
+        String thumbnailUrlString = singleStep.getThumbnailURL();
         if(!singleStep.getVideoURL().isEmpty()){
-            videoUrl = singleStep.getVideoURL();
+            videoUrl = singleStep.getVideoURL(); //get video url
         }else{
-            videoUrl = singleStep.getThumbnailURL();
+            if (mImage.isEmpty()&& (
+                    thumbnailUrlString.endsWith("webp")
+                    || thumbnailUrlString.endsWith("jpg")
+                    || thumbnailUrlString.endsWith("png")
+                    || thumbnailUrlString.endsWith("bmp")
+                    || thumbnailUrlString.endsWith("gif"))) {
+                mImage = thumbnailUrlString;
+            }else {
+                videoUrl = singleStep.getThumbnailURL();
+            }
         }
         description = singleStep.getDescription();
 

@@ -81,15 +81,22 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
         mPlayerView = rootView.findViewById(R.id.videoView);
         mVideoDirection = rootView.findViewById(R.id.media_description);
         recipeImage = rootView.findViewById(R.id.step_image);
-        if(!uri.isEmpty()){
+        if(savedInstanceState != null){
+            playbackPosition = savedInstanceState.getLong("playBackPosition");
+            currentWindow = savedInstanceState.getInt("currentWindow");
+            playWhenReady = savedInstanceState.getBoolean("playWhenReady");
+        }
+        if(!uri.isEmpty() && uri.endsWith(".mp4")){
             initializePlayer(Uri.parse(uri));
             mPlayerView.setVisibility(View.VISIBLE);
             recipeImage.setVisibility(View.GONE);
         }else {
             if(!mImage.isEmpty()){
-                Picasso.with(getActivity()).load(mImage)
+                Picasso.with(getActivity())
+                        .load(mImage)
                         .placeholder(R.drawable.android_error)
-                        .error(R.drawable.android_error).into(recipeImage);
+                        .error(R.drawable.android_error)
+                        .into(recipeImage);
             } else {
                 recipeImage.setImageResource(R.drawable.android_error);
             }
@@ -102,7 +109,6 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
 
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
-
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(),trackSelector,loadControl);
@@ -113,6 +119,8 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
                     new DefaultDataSourceFactory(getContext(),userAgent),
                     new DefaultExtractorsFactory(),null,null);
             mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
+            mExoPlayer.seekTo(currentWindow, playbackPosition);
             mExoPlayer.setPlayWhenReady(playWhenReady);
         }
     }
@@ -181,4 +189,15 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
 
     @Override
     public void onSeekProcessed() { }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        playbackPosition = mExoPlayer.getCurrentPosition();
+        currentWindow = mExoPlayer.getCurrentWindowIndex();
+        playWhenReady = mExoPlayer.getPlayWhenReady();
+        outState.putBoolean("playWhenReady", playWhenReady);
+        outState.putInt("currentWindow", currentWindow);
+        outState.putLong("playBackPosition", playbackPosition);
+    }
 }
