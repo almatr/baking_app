@@ -30,7 +30,7 @@ public class MediaView extends AppCompatActivity {
     private static final String RECIPE_IMAGE = "recipe_image";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_activity);
 
@@ -102,5 +102,17 @@ public class MediaView extends AppCompatActivity {
         VideoFragment videoFragment = VideoFragment.newInstance(videoUrl, description, mImage);
         fragmentTransaction.replace(R.id.video_player, videoFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("position", position);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        position = savedInstanceState.getInt("position", position);
     }
 }
