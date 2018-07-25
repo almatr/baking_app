@@ -193,11 +193,13 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener{
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        playbackPosition = mExoPlayer.getCurrentPosition();
-        currentWindow = mExoPlayer.getCurrentWindowIndex();
-        playWhenReady = mExoPlayer.getPlayWhenReady();
-        outState.putBoolean("playWhenReady", playWhenReady);
-        outState.putInt("currentWindow", currentWindow);
-        outState.putLong("playBackPosition", playbackPosition);
+        if(mExoPlayer != null) {
+            playbackPosition = mExoPlayer.getCurrentPosition();
+            currentWindow = mExoPlayer.getCurrentWindowIndex();
+            playWhenReady = mExoPlayer.getPlayWhenReady();
+            outState.putBoolean("playWhenReady", playWhenReady);
+            outState.putInt("currentWindow", currentWindow);
+            outState.putLong("playBackPosition", playbackPosition);
+        }
     }
 }
